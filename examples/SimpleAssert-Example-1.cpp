@@ -1,6 +1,3 @@
-#include "SimpleAssert.h"
-#include <HardwareSerial.h>
-
 int simpleAssertExample(int i) {  
     /* Simple checking of variable */
     ASSERT(i >= -10) return 1;          // simple check with reaction (return from routine)
@@ -16,18 +13,17 @@ int simpleAssertExample(int i) {
 
     ASSERT(i == 15);                  // check without reaction - executiuon CONTINUED (just assertion message appears as warning)  
     
-    SASERT_PRINTF("Ok");
+    SASERT_PRINTF("Ok\n");
     return 0;
 }
 
 void simpleAssertExampleMain()
 {
-    SASERT_PRINTF("%d", simpleAssertExample(-15));
-    SASERT_PRINTF("%d", simpleAssertExample(-6));
-    SASERT_PRINTF("%d", simpleAssertExample(4));
-    SASERT_PRINTF("%d", simpleAssertExample(10));
-    SASERT_PRINTF("%d", simpleAssertExample(11));
+    SASERT_PRINTF("%d\n", simpleAssertExample(-15));    // Failed
+    SASERT_PRINTF("%d\n", simpleAssertExample(-6));     // Failed 
+    SASERT_PRINTF("%d\n", simpleAssertExample(4));      // Failed
+    SASERT_PRINTF("%d\n", simpleAssertExample(10));     // Failed
+    SASERT_PRINTF("%d\n", simpleAssertExample(11));     // Just Warning - executed to Ok
 
-    SASERT_PRINTF("%d", simpleAssertExample(15));
-
+    SASERT_PRINTF("%d\n", simpleAssertExample(15));     // Ok
 }

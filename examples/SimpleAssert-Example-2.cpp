@@ -1,23 +1,24 @@
 #include "SimpleAssert.h"
 #include <HardwareSerial.h>
 
-bool externalConditionOk(int condition) {
-    static int cond = -2;
-    cond++;
+bool externalConditionOk() {
+    static int condition = -2;
+    condition++;
     return condition > 0;
 }
 
 int simpleAssertExample() {  
     /* Check return code from function*/
-    ASSERT(externalConditionOk(cond), "cond = %d", cond) return -1;
+    bool externalCond = externalConditionOk();
+    ASSERT(externalCond, "cond = %d", externalCond) return -1;
     
-    SASERT_PRINTF("Ok");
+    SASERT_DEBUG("Ok\n");
     return 0;
 }
 
 void simpleAssertExampleMain()
 {
-    SASERT_PRINTF("%d", simpleAssertExample()); 
-    SASERT_PRINTF("%d", simpleAssertExample());
-    SASERT_PRINTF("%d", simpleAssertExample());
+    SASERT_PRINTF("%d\n", simpleAssertExample());  //assertion failed
+    SASERT_PRINTF("%d\n", simpleAssertExample()); 	//assertion failed
+    SASERT_PRINTF("%d\n", simpleAssertExample());	//assertion ok
 }

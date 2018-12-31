@@ -8,6 +8,8 @@
 /* Helper macro */
 #define BL_QUOT(x) #x
 #define BL_QUOTE(x) BL_QUOT(x)
+#define BL_CAT2(x,y) x##y
+#define BL_CONCAT(x,y) BL_CAT2(x,y)
 
 /* Simple assert definitions */
 #if SIMPLE_ASSERT_SILENT 
@@ -20,6 +22,6 @@
 
 
 /** Simple inline checker */
-#define ASSERT(condition, ...)    if (!(condition)) SASERT_DEBUG("ASSERTION `" BL_QUOTE( (condition) ) "` FAILED. " __VA_ARGS__);  if (!(condition))
+#define ASSERT(condition, ...)    bool BL_CONCAT(__assert_condition__, __LINE__) = (condition); if (!(BL_CONCAT(__assert_condition__, __LINE__))) SASERT_DEBUG("ASSERTION `" BL_QUOTE( (condition) ) "` FAILED. " __VA_ARGS__);  if (!(BL_CONCAT(__assert_condition__, __LINE__)))
 
 #endif
