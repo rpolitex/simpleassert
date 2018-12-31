@@ -1,6 +1,9 @@
+#ifndef SIMPLE_ASSERT_H
 
 /*Simple Asert settings*/
+#ifndef SIMPLE_ASSERT_SILENT
 #define SIMPLE_ASSERT_SILENT 0
+#endif
 
 /* Helper macro */
 #define BL_QUOT(x) #x
@@ -18,3 +21,5 @@
 
 /** Simple inline checker */
 #define ASSERT(condition, ...)    if (!(condition)) SASERT_DEBUG("ASSERTION `" BL_QUOTE( (condition) ) "` FAILED. " __VA_ARGS__);  if (!(condition))
+
+#endif
