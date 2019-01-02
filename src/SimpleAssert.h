@@ -21,7 +21,17 @@
 #endif
 
 
+#define ASSERT_VAR(__name__) BL_CONCAT(__name__, __LINE__)
+
+
+
 /** Simple inline checker */
-#define ASSERT(condition, ...)    bool BL_CONCAT(__assert_condition__, __LINE__) = (condition); if (!(BL_CONCAT(__assert_condition__, __LINE__))) SASERT_DEBUG("ASSERTION `" BL_QUOTE( (condition) ) "` FAILED. " __VA_ARGS__);  if (!(BL_CONCAT(__assert_condition__, __LINE__)))
+#define ASSERT(condition, ...)    signed char ASSERT_VAR(__cond__) = (condition); if (!(ASSERT_VAR(__cond__))) SASERT_DEBUG("ASSERTION `" BL_QUOTE( (condition) ) "` FAILED. " __VA_ARGS__);  if (!(ASSERT_VAR(__cond__)))
+
+
+/** Check if function returns 0*/
+#define SASERT_CHECK_PRINT(function, __fstr__, ...)  SASERT_DEBUG("`" BL_QUOTE( function ) "` returns non-zero: [%d] " __fstr__, ASSERT_VAR(__zero__), ##__VA_ARGS__);
+#define CHECK0(function,  ...)    signed char  ASSERT_VAR(__zero__) = (function); if (ASSERT_VAR(__zero__) != 0) SASERT_CHECK_PRINT(function, __VA_ARGS__);  if (ASSERT_VAR(__zero__) != 0)
+
 
 #endif

@@ -1,4 +1,7 @@
-int simpleAssertExample(int i) {  
+#include "SimpleAssert.h"
+#include <HardwareSerial.h>
+
+static int simpleAssertExample(int i) {  
     /* Simple checking of variable */
     ASSERT(i >= -10) return 1;          // simple check with reaction (return from routine)
 
@@ -8,6 +11,7 @@ int simpleAssertExample(int i) {
     
     ASSERT(i > 10, "i = %d", i) {      // check with complex message and multi-line reaction
         /*Any complex reaction here*/
+        SASERT_PRINTF("Complex reaction\n");
         return 4;
     }
 
@@ -17,7 +21,7 @@ int simpleAssertExample(int i) {
     return 0;
 }
 
-void simpleAssertExampleMain()
+void simpleAssertExampleMain1()
 {
     SASERT_PRINTF("%d\n", simpleAssertExample(-15));    // Failed
     SASERT_PRINTF("%d\n", simpleAssertExample(-6));     // Failed 
@@ -26,4 +30,6 @@ void simpleAssertExampleMain()
     SASERT_PRINTF("%d\n", simpleAssertExample(11));     // Just Warning - executed to Ok
 
     SASERT_PRINTF("%d\n", simpleAssertExample(15));     // Ok
+    
+    SASERT_PRINTF("Ok example 1\n");
 }
