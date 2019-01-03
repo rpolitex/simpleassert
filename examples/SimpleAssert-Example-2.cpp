@@ -12,15 +12,17 @@ static int simpleAssertExample() {
     int externalCond = externalConditionOk();
     ASSERT(externalCond, "cond = %d", externalCond) return -1;
     
-    SASERT_DEBUG("Ok\n");
+    SASERT_DEBUG("Ok");
     return 0;
 }
 
 void simpleAssertExampleMain2()
 {
+    SASERT_PRINTF("=== simpleAssertExampleMain2 ===\n\n");
+
     SASERT_PRINTF("%d\n", simpleAssertExample());   //assertion failed
     SASERT_PRINTF("%d\n", simpleAssertExample()); 	//assertion failed
     SASERT_PRINTF("%d\n", simpleAssertExample());	//assertion ok
     
-    SASERT_PRINTF("Ok example 2\n");
+    SASERT_PRINTF("Ok example 2\n\n");
 }

@@ -11,6 +11,10 @@
 #define BL_CAT2(x,y) x##y
 #define BL_CONCAT(x,y) BL_CAT2(x,y)
 
+#define ASSERT_VAR(__name__) BL_CONCAT(__name__, __LINE__)
+#define SASERT_CHECK_EMPTY_STRING(__str__) ( sizeof(BL_QUOTE(__str__)) == 3 && BL_QUOTE(__str__)[0] == '\"' && BL_QUOTE(__str__)[1] == '\"'&& BL_QUOTE(__str__)[2] == '\0')
+
+
 /* Simple assert definitions */
 #if SIMPLE_ASSERT_SILENT 
     #define SASERT_PRINTF
@@ -21,17 +25,17 @@
 #endif
 
 
-#define ASSERT_VAR(__name__) BL_CONCAT(__name__, __LINE__)
-
-
 
 /** Simple inline checker */
-#define ASSERT(condition, ...)    signed char ASSERT_VAR(__cond__) = (condition); if (!(ASSERT_VAR(__cond__))) SASERT_DEBUG("ASSERTION `" BL_QUOTE( (condition) ) "` FAILED. " __VA_ARGS__);  if (!(ASSERT_VAR(__cond__)))
+#define SASERT_ASSERT_PRINT(condition, __fstr__, ...)  ( ( SASERT_CHECK_EMPTY_STRING(__fstr__) ) ? (0) : SASERT_DEBUG("Assertion `" BL_QUOTE( (condition) ) "` failed. " __fstr__, ##__VA_ARGS__) )
+#define ASSERT(condition, ...) signed char ASSERT_VAR(__cond__) = (condition); if (!(ASSERT_VAR(__cond__))) SASERT_ASSERT_PRINT(condition, __VA_ARGS__);  if (!(ASSERT_VAR(__cond__)))
 
 
-/** Check if function returns 0*/
-#define SASERT_CHECK_PRINT(function, __fstr__, ...)  SASERT_DEBUG("`" BL_QUOTE( function ) "` returns non-zero: [%d] " __fstr__, ASSERT_VAR(__zero__), ##__VA_ARGS__);
-#define CHECK0(function,  ...)    signed char  ASSERT_VAR(__zero__) = (function); if (ASSERT_VAR(__zero__) != 0) SASERT_CHECK_PRINT(function, __VA_ARGS__);  if (ASSERT_VAR(__zero__) != 0)
+/** Check if function returns 0*/               
+#define SASERT_CHECK_PRINT(function, __fstr__, ...) ( ( SASERT_CHECK_EMPTY_STRING(__fstr__) ) ? (0) :  SASERT_DEBUG("`" BL_QUOTE( function ) "` returns non-zero: [%d] " __fstr__, ASSERT_VAR(__zero__), ##__VA_ARGS__) )
+#define CHECK0(function,  ...) signed char  ASSERT_VAR(__zero__) = (function); if (ASSERT_VAR(__zero__) != 0) SASERT_CHECK_PRINT(function, __VA_ARGS__);  if (ASSERT_VAR(__zero__) != 0)
 
-
+//void simpleAssertExampleMain1();
+//void simpleAssertExampleMain2();
+//void simpleAssertExampleMain3();
 #endif
