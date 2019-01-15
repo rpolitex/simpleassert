@@ -20,7 +20,7 @@
     #define SASERT_PRINTF
     #define SASERT_DEBUG(__fstr__, ...)
 #else        
-    #define SASERT_PRINTF  Serial.printf
+    #define SASERT_PRINTF  printf /*Use `Serial.printf` for Arduino-based platforms (Arduino, ESP32 etc.)*/
     #define SASERT_DEBUG(__fstr__, ...)   SASERT_PRINTF("%s() [" __FILE__ ":" BL_QUOTE(__LINE__) "]:\t" __fstr__ "\n", __FUNCTION__ , ##__VA_ARGS__)
 #endif
 
