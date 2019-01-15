@@ -9,9 +9,6 @@ One-header, zero-dependency simple assertion lib for restricted environments.
 
 Use `ASSERT()` macro to check the specified condition. If condition falls, the assertion message appears on stdout and you may do a specific reaction (return, close rosource or smth. else).
 
-If you don't need the assertion message - set `SIMPLE_ASSERT_SILENT 1`.
-
-
 
 ```c++
 int resize(unsigned int newSize) {  
@@ -27,7 +24,7 @@ int resize(unsigned int newSize) {
     }
 
     
-    /* Doing something useful */
+    /* Do something useful */
 
     return 0; // all is Ok
 }
@@ -35,6 +32,21 @@ int resize(unsigned int newSize) {
 
 See more examples in `examples` folder.
 
+## Printing messages
+
+By default `ASSERT(condition, msg)` prints message (through `SASERT_PRINTF`) "Assertion  `condition`  failed" and any additional message `msg` that specified as a second  parameter. 
+
+To **suppress message** - use the empty string as a second parameter `ASSERT(i > 15, "")`. This useful while assert condition happens frequently or is a part of normal program flow to prevent flooding the output with a lot of assertion messages.
+
+If you don't need **any output at all** - set `SIMPLE_ASSERT_SILENT 1` in `src/SimpleAssert.h`.
+
+If your **platform** doesn't support `printf` you may define your own `SASERT_PRINTF` macro to make formatted output. For example, for Arduino-based platforms (Arduino, ESP8266, ESP32 etc.) use `#define SASERT_PRINTF  Serial.printf` 
+
+## Special case: check zero return
+
+Many functions from std and other lib returns 0 on success and some error code otherwise. Simple Assert Lib includes special macro `CHECK0(function, msg)` for this case.
+
+In a nutshell `CHECK0()` is a special kind of `ASSERT()` that checks return value of the function and prints it if return is non-zero. For example `CHECK0(foo()) a = 0;` prints value, returned by `foo()` and clear variable `a`, if `foo()` value is non-zero. You may add a custom or suppress message to `CHECK0()` in the same ways as to the  `ASSERT()`.
 
 ## Authors
 1. dRKr, Sinai RnD (<info@sinai.io>)
