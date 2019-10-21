@@ -5,6 +5,10 @@
 #define SIMPLE_ASSERT_SILENT 0
 #endif
 
+#ifndef SIMPLE_ASSERT_PRINTF
+#define SIMPLE_ASSERT_PRINTF printf /*Use `Serial.printf` for Arduino-based platforms (Arduino, ESP32 etc.)*/
+#endif
+
 /* Helper macro */
 #define BL_QUOT(x) #x
 #define BL_QUOTE(x) BL_QUOT(x)
@@ -20,7 +24,7 @@
     #define SASERT_PRINTF [](){return 0;}()
     #define SASERT_DEBUG(__fstr__, ...) [](){return 0;}()
 #else        
-    #define SASERT_PRINTF  printf /*Use `Serial.printf` for Arduino-based platforms (Arduino, ESP32 etc.)*/
+    #define SASERT_PRINTF  SIMPLE_ASSERT_PRINTF /*Use `Serial.printf` for Arduino-based platforms (Arduino, ESP32 etc.)*/
     #define SASERT_DEBUG(__fstr__, ...)   SASERT_PRINTF("%s() [" __FILE__ ":" BL_QUOTE(__LINE__) "]:\t" __fstr__ "\n", __FUNCTION__ , ##__VA_ARGS__)
 #endif
 
