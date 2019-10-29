@@ -15,9 +15,8 @@
 #define BL_CAT2(x,y) x##y
 #define BL_CONCAT(x,y) BL_CAT2(x,y)
 
-#define ASSERT_VAR(__name__) BL_CONCAT(__name__, __LINE__)
+#define SASERT_VAR(__name__) BL_CONCAT(__name__, __LINE__)
 #define SASERT_CHECK_EMPTY_STRING(__str__) ( sizeof(BL_QUOTE(__str__)) == 3 && BL_QUOTE(__str__)[0] == '\"' && BL_QUOTE(__str__)[1] == '\"'&& BL_QUOTE(__str__)[2] == '\0')
-
 
 /* Simple assert definitions */
 #if SIMPLE_ASSERT_SILENT 
@@ -28,21 +27,24 @@
     #define SASERT_DEBUG(__fstr__, ...)   SASERT_PRINTF("%s() [" __FILE__ ":" BL_QUOTE(__LINE__) "]:\t" __fstr__ "\n", __FUNCTION__ , ##__VA_ARGS__)
 #endif
 
-
+/** Prints only when `checkmsg` is non-empty */
+#define SASERT_DEBUG_NE(checkmsg, __fstr__, ...) ( ( SASERT_CHECK_EMPTY_STRING(checkmsg) ) ? (0) : (SASERT_DEBUG(__fstr__, ##__VA_ARGS__)) )
 
 /** Simple inline checker */
-#define SASERT_ASSERT_PRINT(condition, __fstr__, ...)  ( ( SASERT_CHECK_EMPTY_STRING(__fstr__) ) ? ((void)0) : ((void)SASERT_DEBUG("Assertion `" BL_QUOTE( (condition) ) "` failed. " __fstr__, ##__VA_ARGS__)) )
-#define ASSERT(condition, ...) signed char ASSERT_VAR(__cond__) = (condition); if (!(ASSERT_VAR(__cond__))) SASERT_ASSERT_PRINT(condition, __VA_ARGS__);  if (!(ASSERT_VAR(__cond__)))
+#define SASERT_ASSERT_PRINT(condition, __fstr__, ...)   SASERT_DEBUG_NE(__fstr__, "Assertion `" BL_QUOTE( (condition) ) "` failed; " __fstr__, ##__VA_ARGS__)
+#define ASSERT(condition, ...) if ( (condition) ? false : (SASERT_ASSERT_PRINT(condition, __VA_ARGS__) || 1) ) 
 
+/** Check  zero */
+#define SASERT_CHECK0_PRINT(function, errcode, __fstr__, ...) SASERT_DEBUG_NE(__fstr__, "`" BL_QUOTE( function ) "` returns non-zero errcode: [%d]; " __fstr__, errcode, ##__VA_ARGS__)
+/** When using a `CHECK0` you may obtain the non-zero `function` return code by this macro*/
+#define CHECK0_RES __sasert_res__
+/** Check either function returns 0 or error code*/
+#define CHECK0(function,  ...)  if (int CHECK0_RES = (function)) if ( SASERT_CHECK0_PRINT(function, __sasert_res__, __VA_ARGS__) || 1 )
 
-/** Check either function returns 0 or error code*/             
-#define SASERT_CHECK0_PRINT(function, __fstr__, ...) ( ( SASERT_CHECK_EMPTY_STRING(__fstr__) ) ? ((void)0) :  ((void)SASERT_DEBUG("`" BL_QUOTE( function ) "` returns non-zero errcode: [%d] " __fstr__, ASSERT_VAR(__zero__), ##__VA_ARGS__)) )
-#define CHECK0(function,  ...) signed char  ASSERT_VAR(__zero__) = (function); if (ASSERT_VAR(__zero__) != 0) SASERT_CHECK0_PRINT(function, __VA_ARGS__);  if (ASSERT_VAR(__zero__) != 0)
-
-
+/** Check  true */
+#define SASERT_CHECK_PRINT(function, __fstr__, ...) SASERT_DEBUG_NE(__fstr__, "`" BL_QUOTE( function ) "` returns false; " __fstr__, ##__VA_ARGS__)
 /** Check if function returns true (consider false is zero, and true is any non-zero value)*/               
-#define SASERT_CHECK_PRINT(function, __fstr__, ...) ( ( SASERT_CHECK_EMPTY_STRING(__fstr__) ) ? ((void)0) :  ((void)SASERT_DEBUG("`" BL_QUOTE( function ) "` returns false. " __fstr__, ##__VA_ARGS__)) )
-#define CHECKOK(function,  ...) signed char  ASSERT_VAR(__true__) = (function); if (ASSERT_VAR(__true__) == 0) SASERT_CHECK_PRINT(function, __VA_ARGS__);  if (ASSERT_VAR(__true__) == 0)
+#define CHECKOK(function,  ...) if ( ( (function) != 0) ? false : (SASERT_CHECK_PRINT(function, __VA_ARGS__) || 1) ) 
 #define CHECK1 CHECKOK
 
 //void simpleAssertExampleMain1();
