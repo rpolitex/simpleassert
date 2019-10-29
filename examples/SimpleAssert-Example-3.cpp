@@ -11,13 +11,14 @@ int zeroReturnOnSuccess(int res) {
 static int simpleAssertExample(int example) { 
     switch (example) {
         case 1: {
-                CHECK0(zeroReturnOnSuccess(97)) return 1;
+                CHECK0(zeroReturnOnSuccess(97)) return 1;            
             }
             break;
         case 2:{
                 int p = 98;
                 CHECK0(zeroReturnOnSuccess(p), " with p = %d", p)  {
                     SASERT_PRINTF("Complex reaction here\n");
+                    SASERT_DEBUG("CHECK0_RES = %d", CHECK0_RES); // result of `zeroReturnOnSuccess()` call
                     return 2;
                 }    
             }
@@ -25,6 +26,7 @@ static int simpleAssertExample(int example) {
         case 3: {
                 CHECK0(zeroReturnOnSuccess(99), "") { // Suppress CHECK0 default message 
                     SASERT_PRINTF("CHECK0 Message suppressed\n");
+                    SASERT_DEBUG("CHECK0_RES = %d", CHECK0_RES); // result of `zeroReturnOnSuccess()` call
                     return 3;
                 }    
             }    
