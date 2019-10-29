@@ -31,17 +31,17 @@
 
 
 /** Simple inline checker */
-#define SASERT_ASSERT_PRINT(condition, __fstr__, ...)  ( ( SASERT_CHECK_EMPTY_STRING(__fstr__) ) ? (0) : SASERT_DEBUG("Assertion `" BL_QUOTE( (condition) ) "` failed. " __fstr__, ##__VA_ARGS__) )
+#define SASERT_ASSERT_PRINT(condition, __fstr__, ...)  ( ( SASERT_CHECK_EMPTY_STRING(__fstr__) ) ? ((void)0) : ((void)SASERT_DEBUG("Assertion `" BL_QUOTE( (condition) ) "` failed. " __fstr__, ##__VA_ARGS__)) )
 #define ASSERT(condition, ...) signed char ASSERT_VAR(__cond__) = (condition); if (!(ASSERT_VAR(__cond__))) SASERT_ASSERT_PRINT(condition, __VA_ARGS__);  if (!(ASSERT_VAR(__cond__)))
 
 
 /** Check either function returns 0 or error code*/             
-#define SASERT_CHECK0_PRINT(function, __fstr__, ...) ( ( SASERT_CHECK_EMPTY_STRING(__fstr__) ) ? (0) :  SASERT_DEBUG("`" BL_QUOTE( function ) "` returns non-zero errcode: [%d] " __fstr__, ASSERT_VAR(__zero__), ##__VA_ARGS__) )
+#define SASERT_CHECK0_PRINT(function, __fstr__, ...) ( ( SASERT_CHECK_EMPTY_STRING(__fstr__) ) ? ((void)0) :  ((void)SASERT_DEBUG("`" BL_QUOTE( function ) "` returns non-zero errcode: [%d] " __fstr__, ASSERT_VAR(__zero__), ##__VA_ARGS__)) )
 #define CHECK0(function,  ...) signed char  ASSERT_VAR(__zero__) = (function); if (ASSERT_VAR(__zero__) != 0) SASERT_CHECK0_PRINT(function, __VA_ARGS__);  if (ASSERT_VAR(__zero__) != 0)
 
 
 /** Check if function returns true (consider false is zero, and true is any non-zero value)*/               
-#define SASERT_CHECK_PRINT(function, __fstr__, ...) ( ( SASERT_CHECK_EMPTY_STRING(__fstr__) ) ? (0) :  SASERT_DEBUG("`" BL_QUOTE( function ) "` returns false. " __fstr__, ##__VA_ARGS__) )
+#define SASERT_CHECK_PRINT(function, __fstr__, ...) ( ( SASERT_CHECK_EMPTY_STRING(__fstr__) ) ? ((void)0) :  ((void)SASERT_DEBUG("`" BL_QUOTE( function ) "` returns false. " __fstr__, ##__VA_ARGS__)) )
 #define CHECK1(function,  ...) signed char  ASSERT_VAR(__true__) = (function); if (ASSERT_VAR(__true__) == 0) SASERT_CHECK_PRINT(function, __VA_ARGS__);  if (ASSERT_VAR(__true__) == 0)
 
 //void simpleAssertExampleMain1();
