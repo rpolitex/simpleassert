@@ -4,13 +4,13 @@
 static int externalConditionOk() {
     static int condition = -2;
     condition++;
-    return condition > 0;
+    return condition;
 }
 
 static int simpleAssertExample() {  
     /* Check return code from function*/
     int externalCond = externalConditionOk();
-    ASSERT(externalCond, "cond = %d", externalCond) return -1;
+    ASSERT(externalCond > 0, "cond = %d", externalCond) return -1;
     
     SASERT_DEBUG("Ok");
     return 0;
