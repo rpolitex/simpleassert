@@ -12,10 +12,7 @@
 /* Helper macro */
 #define BL_QUOT(x) #x
 #define BL_QUOTE(x) BL_QUOT(x)
-#define BL_CAT2(x,y) x##y
-#define BL_CONCAT(x,y) BL_CAT2(x,y)
 
-#define SASERT_VAR(__name__) BL_CONCAT(__name__, __LINE__)
 #define SASERT_CHECK_EMPTY_STRING(__str__) ( sizeof(BL_QUOTE(__str__)) == 3 && BL_QUOTE(__str__)[0] == '\"' && BL_QUOTE(__str__)[1] == '\"'&& BL_QUOTE(__str__)[2] == '\0')
 
 /* Simple assert definitions */
@@ -36,7 +33,7 @@
 
 /** Check  zero */
 #define SASERT_CHECK0_PRINT(function, errcode, __fstr__, ...) SASERT_DEBUG_NE(__fstr__, "`" BL_QUOTE( function ) "` returns non-zero errcode: [%d]; " __fstr__, errcode, ##__VA_ARGS__)
-/** When using a `CHECK0` you may obtain the non-zero `function` return code by this macro*/
+/** When use CHECK0 you may obtain the non-zero `function` return code by this macro*/
 #define CHECK0_RES __sasert_res__
 /** Check either function returns 0 or error code*/
 #define CHECK0(function,  ...)  if (int CHECK0_RES = (function)) if ( SASERT_CHECK0_PRINT(function, __sasert_res__, __VA_ARGS__) || 1 )
@@ -46,6 +43,7 @@
 /** Check if function returns true (consider false is zero, and true is any non-zero value)*/               
 #define CHECKOK(function,  ...) if ( ( (function) != 0) ? false : (SASERT_CHECK_PRINT(function, __VA_ARGS__) || 1) ) 
 #define CHECK1 CHECKOK
+
 
 //void simpleAssertExampleMain1();
 //void simpleAssertExampleMain2();
