@@ -42,7 +42,8 @@
 
 /** Check if function returns true (consider false is zero, and true is any non-zero value)*/               
 #define SASERT_CHECK_PRINT(function, __fstr__, ...) ( ( SASERT_CHECK_EMPTY_STRING(__fstr__) ) ? ((void)0) :  ((void)SASERT_DEBUG("`" BL_QUOTE( function ) "` returns false. " __fstr__, ##__VA_ARGS__)) )
-#define CHECK1(function,  ...) signed char  ASSERT_VAR(__true__) = (function); if (ASSERT_VAR(__true__) == 0) SASERT_CHECK_PRINT(function, __VA_ARGS__);  if (ASSERT_VAR(__true__) == 0)
+#define CHECKOK(function,  ...) signed char  ASSERT_VAR(__true__) = (function); if (ASSERT_VAR(__true__) == 0) SASERT_CHECK_PRINT(function, __VA_ARGS__);  if (ASSERT_VAR(__true__) == 0)
+#define CHECK1 CHECKOK
 
 //void simpleAssertExampleMain1();
 //void simpleAssertExampleMain2();
