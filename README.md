@@ -32,6 +32,8 @@ int resize(unsigned int newSize) {
 
 See more examples in `examples` folder.
 
+Also there is alias for `ASSERT()` macro named `VERIFY()` (it's handy in situations when `ASSERT()` is already in use). 
+
 ## Printing messages
 
 By default `ASSERT(condition, msg)` prints message (through `SASERT_PRINTF`) "Assertion  `condition`  failed" and any additional message `msg` that specified as a second  parameter. 
