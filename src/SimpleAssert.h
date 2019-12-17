@@ -29,7 +29,15 @@
 
 /** Simple inline checker */
 #define SASERT_ASSERT_PRINT(condition, __fstr__, ...)   SASERT_DEBUG_NE(__fstr__, "Assertion `" BL_QUOTE( (condition) ) "` failed; " __fstr__, ##__VA_ARGS__)
-#define ASSERT(condition, ...) if ( (condition) ? false : (SASERT_ASSERT_PRINT(condition, __VA_ARGS__) || 1) ) 
+#define SASERT_ASSERT(condition, ...) if ( (condition) ? false : (SASERT_ASSERT_PRINT(condition, __VA_ARGS__) || 1) ) 
+/* Aliases */
+/* If one of the macro names is already in use in your project, you may choose another one: ASSERT, VERIFY */
+#ifndef ASSERT
+    #define ASSERT SASERT_ASSERT
+#endif
+#ifndef VERIFY
+    #define VERIFY SASERT_ASSERT
+#endif
 
 /** Check  zero */
 #define SASERT_CHECK0_PRINT(function, errcode, __fstr__, ...) SASERT_DEBUG_NE(__fstr__, "`" BL_QUOTE( function ) "` returns non-zero errcode: [%d]; " __fstr__, errcode, ##__VA_ARGS__)
