@@ -45,13 +45,20 @@
 #define CHECK0_RES __sasert_res__
 /** Check either function returns 0 or error code*/
 #define CHECK0(function,  ...)  if (int CHECK0_RES = (function)) if ( SASERT_CHECK0_PRINT(function, __sasert_res__, __VA_ARGS__) || 1 )
+// IFNOT0 is CHECK0 alias
+#ifndef IFNOT0
+#define IFNOT0 CHECK0
+#endif
 
 /** Check  true */
 #define SASERT_CHECK_PRINT(function, __fstr__, ...) SASERT_DEBUG_NE(__fstr__, "`" BL_QUOTE( function ) "` returns false; " __fstr__, ##__VA_ARGS__)
 /** Check if function returns true (consider false is zero, and true is any non-zero value)*/               
 #define CHECKOK(function,  ...) if ( ( (function) != 0) ? false : (SASERT_CHECK_PRINT(function, __VA_ARGS__) || 1) ) 
 #define CHECK1 CHECKOK
-
+// IFFALSE is CHECKOK alias
+#ifndef IFFALSE
+#define IFFALSE CHECKOK
+#endif
 
 //void simpleAssertExampleMain1();
 //void simpleAssertExampleMain2();
