@@ -48,20 +48,27 @@ If your **platform** doesn't support `printf` you may define your own `SIMPLE_AS
 
 Many functions from std and other lib returns 0 on success and some error code otherwise. Simple Assert Lib includes special macro `CHECK0(function, msg)` for this case.
 
-In a nutshell `CHECK0()` is a special kind of `ASSERT()` that checks return value of the function and prints it if return is non-zero. For example `CHECK0(foo()) return -3;` prints value, returned by `foo()` and return `-3`, if `foo()` value is non-zero. You may add a custom or suppress message to `CHECK0()` in the same ways as to the  `ASSERT()`.
-
-If you need to retrieve the error code, returned by function inside `CHECK0()`, you may use a special macro `CHECK0_RES`:
+In a nutshell `CHECK0()` is a special kind of `ASSERT()` that checks return value of the function and prints it if return is non-zero. For example 
 ```C++
-CHECK0(readInput()) {
+CHECK0(foo()) return -3;
+``` 
+prints value, returned by `foo()` and returns with `-3`, if `foo()` value is non-zero. You may add a custom message or suppress message at all with `CHECK0()` in the same ways as with the  `ASSERT()`.
+
+Also there is an alias for `CHECK0()` named `IFNOT0()`, for using in the statements with complex reaction - to improve a code readability (see below).
+
+If you need to retrieve the error code, returned by function inside `CHECK0()`, you may use a special helper `CHECK0_RES`:
+```C++
+IFNOT0(readFile(fileName, buf)) {
    if (CHECK0_RES == ENOMEM)
        printf("Out of memory\n");
    else if (CHECK0_RES == EACCES)
        printf("Permission denied\n");
    else
        printf("Unknown error\n");
+   
 }
 ```
-Also there is an alias for `CHECK0()` macro named `IFNOT0()`.
+
 
 ## Special case: check True
 
