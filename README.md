@@ -68,8 +68,13 @@ Also there is an alias for `CHECK0()` macro named `IFNOT0()`.
 Many functions in Arduino-based environments return true (non-zero) on success and false (zero) otherwise. Simple Assert Lib includes special macro `CHECKOK(function, msg)` for this case. The usage is the same as `ASSERT()` and `CHECK0()`.
 
 Also there is an alias for `CHECKOK()` macro named `IFFALSE()` - this may improve a code readability:
-```
-IFFALSE (connectServer(address), "Failed connect to: %s", address) return;
+
+```C++
+IFFALSE (connectServer(address), "Failed connect to: %s", address) {
+    errCount++;
+    reconnectionScheduled = true;    
+    return;
+}
 ```
 
 
