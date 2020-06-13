@@ -32,7 +32,7 @@ int resize(unsigned int newSize) {
 
 See more examples in `examples` folder.
 
-Also there is alias for `ASSERT()` macro named `VERIFY()` (it's handy in situations when `ASSERT()` is already in use). 
+Also there is an alias for `ASSERT()` macro named `VERIFY()` (it's handy in situations when `ASSERT()` is already in use). 
 
 ## Printing messages
 
@@ -61,10 +61,16 @@ CHECK0(readInput()) {
        printf("Unknown error\n");
 }
 ```
+Also there is an alias for `CHECK0()` macro named `IFNOT0()`.
 
 ## Special case: check True
 
 Many functions in Arduino-based environments return true (non-zero) on success and false (zero) otherwise. Simple Assert Lib includes special macro `CHECKOK(function, msg)` for this case. The usage is the same as `ASSERT()` and `CHECK0()`.
+
+Also there is an alias for `CHECKOK()` macro named `IFFALSE()` - this may improve a code readability:
+```
+IFFALSE (connectServer(address), "Failed connect to: %s", address) return;
+```
 
 
 ## Authors
