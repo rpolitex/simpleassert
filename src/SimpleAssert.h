@@ -19,16 +19,28 @@
 #if SIMPLE_ASSERT_SILENT 
     #define SASERT_PRINTF [](){return 0;}()
     #define SASERT_DEBUG(__fstr__, ...) [](){return 0;}()
-#else        
-    #define SASERT_PRINTF  SIMPLE_ASSERT_PRINTF /*Use `Serial.printf` for Arduino-based platforms (Arduino, ESP32 etc.)*/
-    #define SASERT_DEBUG(__fstr__, ...)   SASERT_PRINTF("%s() [" __FILE__ ":" BL_QUOTE(__LINE__) "]:\t" __fstr__ "\n", __FUNCTION__ , ##__VA_ARGS__)
+#else
+    #if DEV_MODE
+        /*In Dev Mode use Longer logs */
+        #define SASERT_PRINTF  SIMPLE_ASSERT_PRINTF /*Use `Serial.printf` for Arduino-based platforms (Arduino, ESP32 etc.)*/
+        #define SASERT_DEBUG(__fstr__, ...)   SASERT_PRINTF("%s() [" __FILE__ ":" BL_QUOTE(__LINE__) "]:\t" __fstr__ "\n", __FUNCTION__ , ##__VA_ARGS__)
+    #else
+        /*In Release Mode use Shorter logs */
+        #define SASERT_PRINTF  SIMPLE_ASSERT_PRINTF /*Use `Serial.printf` for Arduino-based platforms (Arduino, ESP32 etc.)*/
+        #define SASERT_DEBUG(__fstr__, ...)   SASERT_PRINTF("%s:" BL_QUOTE(__LINE__) ":" __fstr__ "\n", __FUNCTION__ , ##__VA_ARGS__)
+    #endif
 #endif
 
 /** Prints only when `checkmsg` is non-empty */
 #define SASERT_DEBUG_NE(checkmsg, __fstr__, ...) ( ( SASERT_CHECK_EMPTY_STRING(checkmsg) ) ? (0) : (SASERT_DEBUG(__fstr__, ##__VA_ARGS__)) )
 
 /** Simple inline checker */
-#define SASERT_ASSERT_PRINT(condition, __fstr__, ...)   SASERT_DEBUG_NE(__fstr__, "Assertion `" BL_QUOTE( (condition) ) "` failed; " __fstr__, ##__VA_ARGS__)
+#if DEV_MODE
+    #define SASERT_ASSERT_PRINT(condition, __fstr__, ...)   SASERT_DEBUG_NE(__fstr__, "Assertion `" BL_QUOTE( (condition) ) "` failed; " __fstr__, ##__VA_ARGS__)
+#else
+    #define SASERT_ASSERT_PRINT(condition, __fstr__, ...)   SASERT_DEBUG_NE(__fstr__, "W:ASSRT:" __fstr__, ##__VA_ARGS__)
+#endif
+
 #define SASERT_ASSERT(condition, ...) if ( (condition) ? false : (SASERT_ASSERT_PRINT(condition, __VA_ARGS__) || 1) ) 
 /* Aliases */
 /* If one of the macro names is already in use in your project, you may choose another one: ASSERT, VERIFY */
@@ -40,7 +52,11 @@
 #endif
 
 /** Check  zero */
-#define SASERT_CHECK0_PRINT(function, errcode, __fstr__, ...) SASERT_DEBUG_NE(__fstr__, "`" BL_QUOTE( function ) "` returns non-zero errcode: [%d]; " __fstr__, errcode, ##__VA_ARGS__)
+#if DEV_MODE
+    #define SASERT_CHECK0_PRINT(function, errcode, __fstr__, ...) SASERT_DEBUG_NE(__fstr__, "`" BL_QUOTE( function ) "` returns non-zero errcode: [%d]; " __fstr__, errcode, ##__VA_ARGS__)
+#else
+    #define SASERT_CHECK0_PRINT(function, errcode, __fstr__, ...) SASERT_DEBUG_NE(__fstr__, "W:CHK0[%d]:" __fstr__, errcode, ##__VA_ARGS__)
+#endif
 /** When use CHECK0 you may obtain the non-zero `function` return code by this macro*/
 #define CHECK0_RES __sasert_res__
 /** Check either function returns 0 or error code*/
@@ -51,7 +67,11 @@
 #endif
 
 /** Check  true */
-#define SASERT_CHECK_PRINT(function, __fstr__, ...) SASERT_DEBUG_NE(__fstr__, "`" BL_QUOTE( function ) "` returns false; " __fstr__, ##__VA_ARGS__)
+#if DEV_MODE
+    #define SASERT_CHECK_PRINT(function, __fstr__, ...) SASERT_DEBUG_NE(__fstr__, "`" BL_QUOTE( function ) "` returns false; " __fstr__, ##__VA_ARGS__)
+#else
+    #define SASERT_CHECK_PRINT(function, __fstr__, ...) SASERT_DEBUG_NE(__fstr__, "W:CHKOK:" __fstr__, ##__VA_ARGS__)
+#endif
 /** Check if function returns true (consider false is zero, and true is any non-zero value)*/               
 #define CHECKOK(function,  ...) if ( ( (function) != 0) ? false : (SASERT_CHECK_PRINT(function, __VA_ARGS__) || 1) ) 
 #define CHECK1 CHECKOK
