@@ -9,6 +9,10 @@
 #define SIMPLE_ASSERT_PRINTF printf /*Use `Serial.printf` for Arduino-based platforms (Arduino, ESP32 etc.)*/
 #endif
 
+#ifndef DEV_MODE
+#define DEV_MODE 0
+#endif
+
 /* Helper macro */
 #define BL_QUOT(x) #x
 #define BL_QUOTE(x) BL_QUOT(x)
