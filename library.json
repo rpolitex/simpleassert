@@ -1,13 +1,13 @@
 {
   "name": "SimpleAssert",
-  "keywords": "GCC, assert, check",
+  "keywords": "GCC, assert, verify, check",
   "description": "One-header zero-dependency simple assertion lib",
   "homepage": "https://github.com/rpolitex/simpleassert",
   "repository": {
     "type": "git",
     "url": "https://github.com/rpolitex/simpleassert"
   },
-  "version": "3.4",
+  "version": "4.2.1",
   "authors": [
     {
     "name": "dRKr",
