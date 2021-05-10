@@ -7,15 +7,15 @@
     "type": "git",
     "url": "https://github.com/rpolitex/simpleassert"
   },
-  "version": "4.3",
+  "version": "4.4",
   "authors": [
     {
     "name": "dRKr",
     "email": "info@sinai.io",
-    "url": "www.sinai.io",
+    "url": "https://www.sinai.io",
     "maintainer": true 
     }    
   ],
-  "frameworks": "arduino",
+  "frameworks": "*",
   "platforms": ["Arduino", "esp32","espressif32","espressif8266","nordicnrf51","nordicnrf52","ststm32"]
 }
