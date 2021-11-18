@@ -64,7 +64,7 @@
 /** When use CHECK0 you may obtain the non-zero `function` return code by this macro*/
 #define CHECK0_RES __sasert_res__
 /** Check either function returns 0 or error code*/
-#define CHECK0(function,  ...)  if (int CHECK0_RES = (function)) if ( SASERT_CHECK0_PRINT(function, __sasert_res__, __VA_ARGS__) || 1 )
+#define CHECK0(function,  ...)  if (int __attribute__((unused)) CHECK0_RES = (function)) if ( SASERT_CHECK0_PRINT(function, __sasert_res__, __VA_ARGS__) || 1 )
 // IFNOT0 is CHECK0 alias
 #ifndef IFNOT0
 #define IFNOT0 CHECK0
