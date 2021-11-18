@@ -48,11 +48,16 @@
 #define SASERT_ASSERT(condition, ...) if ( (condition) ? false : (SASERT_ASSERT_PRINT(condition, __VA_ARGS__) || 1) ) 
 /* Aliases */
 /* If one of the macro names is already in use in your project, you may choose another one: ASSERT, VERIFY */
-#ifndef ASSERT
-    #define ASSERT SASERT_ASSERT
-#endif
-#ifndef VERIFY
-    #define VERIFY SASERT_ASSERT
+#ifndef CHECK
+    #define CHECK SASERT_ASSERT
+#else
+    #ifndef VERIFY
+        #define VERIFY SASERT_ASSERT
+    #else 
+        #ifndef ASSERT
+            #define ASSERT SASERT_ASSERT
+        #endif
+    #endif
 #endif
 
 /** Check  zero */
@@ -64,10 +69,15 @@
 /** When use CHECK0 you may obtain the non-zero `function` return code by this macro*/
 #define CHECK0_RES __sasert_res__
 /** Check either function returns 0 or error code*/
-#define CHECK0(function,  ...)  if (int __attribute__((unused)) CHECK0_RES = (function)) if ( SASERT_CHECK0_PRINT(function, __sasert_res__, __VA_ARGS__) || 1 )
+#define SASERT_CHECK0(function,  ...)  if (int __attribute__((unused)) CHECK0_RES = (function)) if ( SASERT_CHECK0_PRINT(function, __sasert_res__, __VA_ARGS__) || 1 )
+
 // IFNOT0 is CHECK0 alias
-#ifndef IFNOT0
-#define IFNOT0 CHECK0
+#ifndef CHECK0
+    #define CHECK0 SASERT_CHECK0
+#else
+    #ifndef IFNOT0
+        #define IFNOT0 SASERT_CHECK0
+    #endif
 #endif
 
 /** Check  true */
@@ -77,14 +87,18 @@
     #define SASERT_CHECK_PRINT(function, __fstr__, ...) SASERT_DEBUG_NE(__fstr__, "W:CHKOK:" __fstr__, ##__VA_ARGS__)
 #endif
 /** Check if function returns true (consider false is zero, and true is any non-zero value)*/               
-#define CHECKOK(function,  ...) if ( ( (function) != 0) ? false : (SASERT_CHECK_PRINT(function, __VA_ARGS__) || 1) ) 
-#define CHECK1 CHECKOK
+#define SASERT_CHECKOK(function,  ...) if ( ( (function) != 0) ? false : (SASERT_CHECK_PRINT(function, __VA_ARGS__) || 1) ) 
+
 // IFFALSE is CHECKOK alias
-#ifndef IFFALSE
-#define IFFALSE CHECKOK
+#ifndef CHECKOK
+    #define CHECKOK SASERT_CHECKOK
+#else
+    #ifndef IFFALSE
+        #define IFFALSE SASERT_CHECKOK
+    #endif
 #endif
 
-// optional keywords for better readabilty: `VERIFY( a < b ) ONFAIL return -1;`   
+// additional keywords for better readabilty: `VERIFY( a < b ) ONFAIL return -1;`   
 #define ONFAIL
 #define ON_FAIL
 
