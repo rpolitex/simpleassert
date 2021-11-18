@@ -84,6 +84,10 @@
 #define IFFALSE CHECKOK
 #endif
 
+// optional keywords for better readabilty: `VERIFY( a < b ) ONFAIL return -1;`   
+#define ONFAIL
+#define ON_FAIL
+
 //void simpleAssertExampleMain1();
 //void simpleAssertExampleMain2();
 //void simpleAssertExampleMain3();
