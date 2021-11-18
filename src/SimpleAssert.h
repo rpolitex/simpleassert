@@ -48,8 +48,8 @@
 #define SASERT_ASSERT(condition, ...) if ( (condition) ? false : (SASERT_ASSERT_PRINT(condition, __VA_ARGS__) || 1) ) 
 /* Aliases */
 /* If one of the macro names is already in use in your project, you may choose another one: ASSERT, VERIFY */
-#ifndef CHECK
-    #define CHECK SASERT_ASSERT
+#ifndef EXPECT        
+    #define EXPECT SASERT_ASSERT
 #else
     #ifndef VERIFY
         #define VERIFY SASERT_ASSERT
