@@ -6,7 +6,7 @@
 #endif
 
 #ifndef SIMPLE_ASSERT_PRINTF
-#define SIMPLE_ASSERT_PRINTF printf /*Use `Serial.printf` for Arduino-based platforms (Arduino, ESP32 etc.)*/
+#define SIMPLE_ASSERT_PRINTF(...) printf(__VA_ARGS__) /*Use `Serial.printf` for Arduino-based platforms (Arduino, ESP32 etc.)*/
 #endif
 
 #ifndef DEV_MODE
@@ -21,16 +21,16 @@
 
 /* Simple assert definitions */
 #if SIMPLE_ASSERT_SILENT 
-    #define SASERT_PRINTF [](){return 0;}()
-    #define SASERT_DEBUG(__fstr__, ...) [](){return 0;}()
+    #define SASERT_PRINTF (1)
+    #define SASERT_DEBUG(__fstr__, ...) (1)
 #else
     #if DEV_MODE
         /*In Dev Mode use Longer logs */
-        #define SASERT_PRINTF  SIMPLE_ASSERT_PRINTF /*Use `Serial.printf` for Arduino-based platforms (Arduino, ESP32 etc.)*/
+        #define SASERT_PRINTF(...)  (( { SIMPLE_ASSERT_PRINTF(__VA_ARGS__); } ), 1 )
         #define SASERT_DEBUG(__fstr__, ...)   SASERT_PRINTF("%s() [" __FILE__ ":" BL_QUOTE(__LINE__) "]:\t" __fstr__ "\n", __FUNCTION__ , ##__VA_ARGS__)
     #else
         /*In Release Mode use Shorter logs */
-        #define SASERT_PRINTF  SIMPLE_ASSERT_PRINTF /*Use `Serial.printf` for Arduino-based platforms (Arduino, ESP32 etc.)*/
+        #define SASERT_PRINTF(...)  (( { SIMPLE_ASSERT_PRINTF(__VA_ARGS__); } ), 1 )
         #define SASERT_DEBUG(__fstr__, ...)   SASERT_PRINTF("%s:" BL_QUOTE(__LINE__) ":" __fstr__ "\n", __FUNCTION__ , ##__VA_ARGS__)
     #endif
 #endif
