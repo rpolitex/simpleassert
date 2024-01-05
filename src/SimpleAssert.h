@@ -9,8 +9,12 @@
 #define SIMPLE_ASSERT_PRINTF(...) printf(__VA_ARGS__) /*Use `Serial.printf` for Arduino-based platforms (Arduino, ESP32 etc.)*/
 #endif
 
-#ifndef DEV_MODE
-#define DEV_MODE 0
+#ifndef DEV_MODE    
+    #ifdef DEBUG
+        #define DEV_MODE 1
+    #else
+        #define DEV_MODE 0
+    #endif
 #endif
 
 /* Helper macro */
